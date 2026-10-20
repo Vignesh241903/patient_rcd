@@ -1,0 +1,8 @@
+com\hospital\patientregistry\controller\PatientController.class
+com\hospital\patientregistry\model\BaseEntity.class
+com\hospital\patientregistry\service\PatientService.class
+com\hospital\patientregistry\aspect\LoggingAspect.class
+com\hospital\patientregistry\model\Patient.class
+com\hospital\patientregistry\PatientRegistryApplication.class
+com\hospital\patientregistry\controller\PatientApiController.class
+com\hospital\patientregistry\repository\PatientRepository.class
