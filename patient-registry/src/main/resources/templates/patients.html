@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Patients')}"></head>
+<body>
+<div class="app">
+    <aside th:replace="~{fragments :: sidebar('patients')}"></aside>
+
+    <main class="main">
+        <header class="topbar">Patients</header>
+
+        <div class="content">
+            <div class="page-heading">
+                <div>
+                    <h1>Patients</h1>
+                    <p th:text="${#lists.size(records)} + ' records'">0 records</p>
+                </div>
+                <a class="btn primary" th:href="@{/patients/new}">+ Register patient</a>
+            </div>
+
+            <div class="alert" th:if="${message}" th:text="${message}"></div>
+
+            <form method="get" th:action="@{/patients}" class="toolbar">
+                <input type="text" name="q" placeholder="Search by name or patient code" th:value="${q}">
+                <select name="status">
+                    <option value="" th:selected="${status == ''}">All statuses</option>
+                    <option value="ADMITTED" th:selected="${status == 'ADMITTED'}">Admitted</option>
+                    <option value="OUTPATIENT" th:selected="${status == 'OUTPATIENT'}">Outpatient</option>
+                </select>
+                <button type="submit" class="btn">Search</button>
+                <a th:href="@{/patients}" class="btn">Clear</a>
+            </form>
+
+            <section class="panel">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Patient</th>
+                        <th>Date of birth</th>
+                        <th>Sex</th>
+                        <th>Disease</th>
+                        <th>Ward / Bed</th>
+                        <th>Registered</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="d : ${records}">
+                        <td>
+                            <strong th:text="${d.patient.fullName}"></strong><br>
+                            <small th:text="${d.patient.patientCode}"></small>
+                        </td>
+                        <td th:text="${#temporals.format(d.patient.dateOfBirth, 'dd MMM yyyy')}"></td>
+                        <td th:text="${d.patient.sex}"></td>
+                        <td th:text="${d.disease}"></td>
+                        <td th:text="${d.ward} + ' / ' + ${d.bed}"></td>
+                        <td th:text="${#temporals.format(d.patient.registeredAt, 'dd MMM yyyy, HH:mm')}"></td>
+                        <td>
+                            <span class="badge" th:text="${d.status == 'ADMITTED' ? 'Admitted' : 'Outpatient'}"></span>
+                        </td>
+                        <td class="actions">
+                            <a th:href="@{/patients/{id}/edit(id=${d.patient.id})}">Edit</a>
+                            <form th:action="@{/patients/{id}/delete(id=${d.patient.id})}" method="post"
+                                  onsubmit="return confirm('Delete this patient record? This cannot be undone.');">
+                                <button type="submit" class="link-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(records)}">
+                        <td colspan="8" class="empty">No matching records.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </main>
+</div>
+</body>
+</html>

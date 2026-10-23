@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Register patient')}"></head>
+<body>
+<div class="app">
+    <aside th:replace="~{fragments :: sidebar('register')}"></aside>
+
+    <main class="main">
+        <header class="topbar">Register patient</header>
+
+        <div class="content">
+            <div class="page-heading">
+                <div>
+                    <h1 th:text="${record.patientId == null} ? 'Register patient' : 'Edit patient'">Register patient</h1>
+                    <p>Fields marked * are required.</p>
+                </div>
+            </div>
+
+            <form th:object="${record}"
+                  th:action="${record.patientId == null} ? @{/patients} : @{/patients/{id}(id=${record.patientId})}"
+                  method="post" class="panel form">
+                <input type="hidden" th:field="*{patientId}">
+
+                <h2 class="section-title">Patient details</h2>
+                <div class="grid">
+                    <div class="field">
+                        <label for="fullName">Full name *</label>
+                        <input id="fullName" type="text" th:field="*{fullName}">
+                        <span class="error" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></span>
+                    </div>
+
+                    <div class="field">
+                        <label for="dateOfBirth">Date of birth *</label>
+                        <input id="dateOfBirth" type="date" th:field="*{dateOfBirth}">
+                        <span class="error" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"></span>
+                    </div>
+
+                    <div class="field">
+                        <label for="sex">Sex *</label>
+                        <select id="sex" th:field="*{sex}">
+                            <option value="">Select</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <span class="error" th:if="${#fields.hasErrors('sex')}" th:errors="*{sex}"></span>
+                    </div>
+
+                    <div class="field">
+                        <label for="phone">Phone</label>
+                        <input id="phone" type="text" th:field="*{phone}">
+                        <span class="error" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></span>
+                    </div>
+                </div>
+
+                <h2 class="section-title">Diagnosis</h2>
+                <div class="grid">
+                    <div class="field">
+                        <label for="disease">Disease *</label>
+                        <input id="disease" type="text" th:field="*{disease}">
+                        <span class="error" th:if="${#fields.hasErrors('disease')}" th:errors="*{disease}"></span>
+                    </div>
+
+                    <div class="field">
+                        <label for="status">Status *</label>
+                        <select id="status" th:field="*{status}">
+                            <option value="OUTPATIENT">Outpatient</option>
+                            <option value="ADMITTED">Admitted</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="ward">Ward</label>
+                        <input id="ward" type="text" th:field="*{ward}" placeholder="Leave empty for outpatient">
+                    </div>
+
+                    <div class="field">
+                        <label for="bed">Bed</label>
+                        <input id="bed" type="text" th:field="*{bed}" placeholder="Leave empty for outpatient">
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <a th:href="@{/patients}" class="btn">Cancel</a>
+                    <button type="submit" class="btn primary">Save patient</button>
+                </div>
+            </form>
+        </div>
+    </main>
+</div>
+</body>
+</html>
